@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/cnydevelop/slackbot"
 	"github.com/cnydevelop/slackbot/slackbot"
 )
 
