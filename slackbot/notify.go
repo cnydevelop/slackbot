@@ -12,7 +12,7 @@ import (
 )
 
 // Notify posts a notification to Slack that the build is complete.
-func Notify(b *cloudbuild.Build, webhook string, project string) {
+func Notify(b *cloudbuild.Build, webhook string, project string, commitId string) {
 	url := fmt.Sprintf("https://console.cloud.google.com/cloud-build/builds/%s", b.Id)
 	var i string
 	switch b.Status {
@@ -40,7 +40,29 @@ func Notify(b *cloudbuild.Build, webhook string, project string) {
 	var msg string
 	if b.Status == "WORKING" {
 		msgFmt := `{
-			"text": "%s *%s* build started",
+			"blocks": [
+				{
+					"type": "section",
+					"fields": [
+						{
+							"type": "mrkdwn",
+							"text": "*Build Id:*\n %s"
+						},
+						{
+							"type": "mrkdwn",
+							"text": "*Repository:*\n %s"
+						},
+						{
+							"type": "mrkdwn",
+							"text": "*Commit Id:*\n %s"
+						},
+						{
+							"type": "mrkdwn",
+							"text": "*Build Status:*\n %s build started"
+						}
+					]
+				}
+			],
 			"attachments": [{
 				"fallback": "Open build details at %s",
 				"actions": [{
@@ -50,7 +72,7 @@ func Notify(b *cloudbuild.Build, webhook string, project string) {
 				}]
 			}]
 		}`
-		msg = fmt.Sprintf(msgFmt, i, project, url, url)
+		msg = fmt.Sprintf(msgFmt, b.Id, project, commitId, i, url, url)
 	} else {
 		startTime, err := time.Parse(time.RFC3339, b.StartTime)
 		if err != nil {
@@ -63,7 +85,33 @@ func Notify(b *cloudbuild.Build, webhook string, project string) {
 		buildDuration := finishTime.Sub(startTime).Truncate(time.Second)
 
 		msgFmt := `{
-			"text": "%s *%s* build _%s_ after _%s_",
+			"blocks": [
+				{
+					"type": "section",
+					"fields": [
+						{
+							"type": "mrkdwn",
+							"text": "*Build Id:*\n %s"
+						},
+						{
+							"type": "mrkdwn",
+							"text": "*Repository:*\n %s"
+						},
+						{
+							"type": "mrkdwn",
+							"text": "*Commit Id:*\n %s"
+						},
+						{
+							"type": "mrkdwn",
+							"text": "*Build Time:*\n %s"
+						},
+						{
+							"type": "mrkdwn",
+							"text": "*Build Status:*\n %s %s"
+						}
+					]
+				}
+			],
 			"attachments": [{
 				"fallback": "Open build details at %s",
 				"actions": [{
@@ -73,7 +121,7 @@ func Notify(b *cloudbuild.Build, webhook string, project string) {
 				}]
 			}]
 		}`
-		msg = fmt.Sprintf(msgFmt, i, project, b.Status, buildDuration, url, url)
+		msg = fmt.Sprintf(msgFmt, b.Id, project, commitId, buildDuration, b.Status, i, url, url)
 	}
 
 	r := strings.NewReader(msg)

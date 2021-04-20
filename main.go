@@ -13,6 +13,7 @@ import (
 var (
 	buildId     = flag.String("build", "", "Id of monitored Build")
 	webhook     = flag.String("webhook", "", "Slack webhook URL")
+	commitId    = flag.String("commit", "", "Commit")
 	project     = flag.String("project", "unknown", "Project name being built")
 	mode        = flag.String("mode", "trigger", "Mode the builder runs in")
 	copyName    = flag.Bool("copy-name", false, "Copy name of slackbot's build step from monitored build to watcher build")
@@ -33,6 +34,10 @@ func main() {
 		log.Fatalf("Build ID must be provided.")
 	}
 
+	if *commitId == "" {
+		log.Fatalf("Build ID must be provided.")
+	}
+
 	if *mode == "" {
 		log.Fatalf("Mode must be provided.")
 	}
@@ -49,14 +54,14 @@ func main() {
 	if *mode == "trigger" {
 		// Trigger another build to run the monitor.
 		log.Printf("Starting trigger mode for build %s", *buildId)
-		slackbot.Trigger(ctx, projectId, *buildId, *webhook, *project, *copyName, *copyTags, *copyTimeout)
+		slackbot.Trigger(ctx, projectId, *buildId, *webhook, *project, *copyName, *copyTags, *copyTimeout, *commitId)
 		return
 	}
 
 	if *mode == "monitor" {
 		// Monitor the other build until completion.
 		log.Printf("Starting monitor mode for build %s", *buildId)
-		slackbot.Monitor(ctx, projectId, *buildId, *webhook, *project)
+		slackbot.Monitor(ctx, projectId, *buildId, *webhook, *project, *commitId)
 		return
 	}
 }

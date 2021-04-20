@@ -12,7 +12,7 @@ const tickDuration = 20 * time.Second
 const monitorErrorMarginDuration = (maxErrors + 1) * tickDuration
 
 // Monitor polls Cloud Build until the build reaches completed status, then triggers the Slack event.
-func Monitor(ctx context.Context, projectId string, buildId string, webhook string, project string) {
+func Monitor(ctx context.Context, projectId string, buildId string, webhook string, project string, commitId string) {
 	svc := gcbClient(ctx)
 	errors := 0
 	started := false
@@ -35,12 +35,12 @@ func Monitor(ctx context.Context, projectId string, buildId string, webhook stri
 		case "WORKING":
 			if !started {
 				log.Printf("Build started. Notifying")
-				Notify(monitoredBuild, webhook, project)
+				Notify(monitoredBuild, webhook, project, commitId)
 				started = true
 			}
 		case "SUCCESS", "FAILURE", "INTERNAL_ERROR", "TIMEOUT", "CANCELLED":
 			log.Printf("Terminal status reached. Notifying")
-			Notify(monitoredBuild, webhook, project)
+			Notify(monitoredBuild, webhook, project, commitId)
 			return
 		}
 		<-t
