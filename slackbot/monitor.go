@@ -5,7 +5,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/cnydevelop/slackbot/slackbot/notify"
+	"github.com/cnydevelop/slackbot/slackbot"
 )
 
 const maxErrors = 3
