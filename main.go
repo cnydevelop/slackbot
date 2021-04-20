@@ -8,7 +8,8 @@ import (
 	"log"
 
 	// "github.com/GoogleCloudPlatform/cloud-builders-community/slackbot/slackbot"
-	"github.com/cnydevelop/slackbot/slackbot"
+	// "github.com/cnydevelop/slackbot/slackbot"
+	"slackbot/slackbot"
 )
 
 var (
