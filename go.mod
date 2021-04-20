@@ -1,4 +1,3 @@
-<!-- module github.com/GoogleCloudPlatform/cloud-builders-community/slackbot -->
 module github.com/cnydevelop/slackbot/slackbot
 
 go 1.14

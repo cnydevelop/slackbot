@@ -1,5 +1,5 @@
 # slackbot
-
+<!-- module github.com/GoogleCloudPlatform/cloud-builders-community/slackbot -->
 Slackbot allows you to post build status messages to Slack.
 
 ![Slack screenshot](assets/screenshot.png)
