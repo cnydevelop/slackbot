@@ -1,4 +1,4 @@
-module cnydevelop/slackbot/slackbot
+module github.com/cnydevelop/slackbot/slackbot
 
 go 1.14
 
