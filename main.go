@@ -7,8 +7,8 @@ import (
 	"flag"
 	"log"
 
-	// "github.com/GoogleCloudPlatform/cloud-builders-community/slackbot/slackbot"
-	"github.com/cnydevelop/slackbot/slackbot"
+	"github.com/GoogleCloudPlatform/cloud-builders-community/slackbot/slackbot"
+	// "github.com/cnydevelop/slackbot/slackbot"
 	// "cnydevelop/slackbot/slackbot"
 )
 

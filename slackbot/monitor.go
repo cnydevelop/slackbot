@@ -5,8 +5,8 @@ import (
 	"log"
 	"time"
 
-	"github.com/cnydevelop/slackbot"
-	"github.com/cnydevelop/slackbot/slackbot"
+	// "github.com/cnydevelop/slackbot"
+	// "github.com/cnydevelop/slackbot/slackbot"
 )
 
 const maxErrors = 3
